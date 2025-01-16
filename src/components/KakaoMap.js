@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const KakaoMap = () => {
+  
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState('');

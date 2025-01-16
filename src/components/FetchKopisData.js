@@ -5,8 +5,6 @@ function FetchKopisData() {
     // KOPIS API에서 공연 데이터 가져오기
     const fetchData = async () => {
 
-
-
        try {
         const response = await fetch(
           "/openApi/restful/pblprfr?service=6047922a467940f3bf64dc296efae31b&stdate=20160101&eddate=20160630&rows=10&cpage=1"  
