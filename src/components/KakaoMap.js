@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+
 const KakaoMap = () => {
-  
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -33,6 +33,16 @@ const KakaoMap = () => {
     // 마커 클릭 이벤트
     window.kakao.maps.event.addListener(marker, 'click', () => {
       infowindow.open(map, marker);
+    });
+
+    // 마커 mouseover 시 인포윈도우 열기
+    window.kakao.maps.event.addListener(marker, 'mouseover', () => {
+      infowindow.open(map, marker);
+    });
+
+    // 마커 mouseout 시 인포윈도우 닫기
+    window.kakao.maps.event.addListener(marker, 'mouseout', () => {
+      infowindow.close();
     });
 
     return marker;
