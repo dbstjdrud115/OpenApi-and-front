@@ -1,3 +1,4 @@
+/*
 import React, { useEffect } from 'react';
 
 function FetchKopisData() {
@@ -69,3 +70,4 @@ function FetchKopisData() {
 }
 
 export default FetchKopisData;
+*/

@@ -8,15 +8,14 @@ import './App.css'; // CSS 파일 import
 function App() {
   return (
     <div className="App">
-      <h1>카카오 지도 예시</h1>
       <div className="content-container">
         <div className="map-container">
           <KakaoMap /> {/* KakaoMap 컴포넌트 렌더링 */}
         </div>
-        <div className="kopis-container">
-          <FetchKopisData /> {/* FetchKopisData 컴포넌트 추가 */}
+        {/*<div className="kopis-container">
+          <FetchKopisData /> 
         </div>
-        {/*<div>
+        <div>
            <FestivalSearch></FestivalSearch>
         </div>*/}
       </div>

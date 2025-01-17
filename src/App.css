@@ -27,7 +27,6 @@ h1 {
 /* 각 컴포넌트 테두리 스타일 (개발 중 시각 확인용) */
 .map-container,
 .kopis-container {
-  border: 2px solid red; /* 개발용 테두리 */
   margin: 16px 0;
   padding: 8px;
 }
