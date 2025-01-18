@@ -2,6 +2,9 @@ import React, { useState, useEffect,useCallback  } from 'react';
 import '../css/KakaoMap.css';
 import searchIcon from '../images/icon_search.png';
 
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css"; 
+
 const KakaoMap = () => {
   
   const [map, setMap] = useState(null);
@@ -28,7 +31,6 @@ const KakaoMap = () => {
     });
   }, []);
 
-  // 마커 추가 함수
   const addMarker = useCallback((position, title) => {
     const markerPosition = new window.kakao.maps.LatLng(position.lat, position.lng);
     const marker = new window.kakao.maps.Marker({
@@ -71,14 +73,21 @@ const KakaoMap = () => {
   }, [map]);
 
   // 검색 처리 함수
-  //const handleSearch = (e) => {
   const handleSearch = async (e) => {
 
-
-
     e.preventDefault();
-    if (!searchKeyword.trim()) return;
-
+    if (!searchKeyword.trim()) {
+      Toastify({
+        text: "검색어를 입력해주세요", 
+        duration: 3000, 
+        close: true, 
+        gravity: "bottom", 
+        position: "right", 
+        backgroundColor: "#333", 
+        stopOnFocus: true, 
+      }).showToast();
+      return;
+    }  
     // 기존 마커들 제거
     markers.forEach(item => item.marker.setMap(null));
     setMarkers([]);
@@ -87,18 +96,16 @@ const KakaoMap = () => {
       
         try {
         //현재는 프론트, 백 모두 로컬서버라 이리 설정되어있지만, 고정 ip 및 도메인이 정해지면 설정 변경 필요!
+        //키워드 필수값으로 해야할듯.
+        /*
+          장소가 겹치는 경우엔 마커는 그대로 표시하돼, 결과 List에 각각뿌려주는쪽으로 방향을 잡아야할듯.
+        */
+       
         const response = await fetch(`http://localhost:8050/kopis?keyword=${encodeURIComponent(searchKeyword)}`);
         const dbData = await response.json();
         const places = new window.kakao.maps.services.Places();
         const bounds = new window.kakao.maps.LatLngBounds();
         const newMarkers = [];
-
-        /*
-        places.keywordSearch(searchKeyword, (data, status) => {
-          if (status === window.kakao.maps.services.Status.OK) {
-            const bounds = new window.kakao.maps.LatLngBounds();
-            const newMarkers = [];
-        */
 
         for (const place of dbData) {
           // Kakao Maps API로 좌표 보완
@@ -114,7 +121,7 @@ const KakaoMap = () => {
               };
       
               // 마커 및 인포윈도우 생성
-              const { marker, infowindow } = addMarker(position, place.place_name);
+              const { marker, infowindow } = addMarker(position, place.festivalHallName);
               bounds.extend(new window.kakao.maps.LatLng(kakaoPlace.y, kakaoPlace.x));
               newMarkers.push({ marker, infowindow });
       
@@ -162,22 +169,18 @@ const KakaoMap = () => {
       }
           
 
-    // 장소 검색 객체 생성
-
-    
     //https://apis.map.kakao.com/web/documentation/#services_Places_keywordSearch
     //OPEN API문서에 따름
-    /*
-    const places = new window.kakao.maps.services.Places();
-
+    
     //places.keywordSearch('판교 치킨', callback);
     //공식문서 기준으로, searchKeyword의 콜백함수가 data,status다. 
-    //일단 kakaomap은 콜백결과에 대한 위도, 경도값이 포함되어있기에 문제가 없지만.. 
-
     //data == 전체결과인 List
     //data.forEach(place  = place는 data에서 꺼낸 각 값. 그 값 안에는 위도 경도, 이름이 다 들어있음.
     //position은 addMarker에 사용되고, 순수 위경도값은 y,x축 표시에 사용됨.
-
+    
+    // 장소 검색 객체 생성
+    /*
+    const places = new window.kakao.maps.services.Places();
 
     places.keywordSearch(searchKeyword, (data, status) => {
       if (status === window.kakao.maps.services.Status.OK) {
@@ -203,10 +206,10 @@ const KakaoMap = () => {
         alert('검색 결과 중 오류가 발생했습니다.');
       }
     });
-    
+    */
 
 
-*/
+
 
   };
 
