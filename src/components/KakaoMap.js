@@ -14,6 +14,42 @@ const KakaoMap = () => {
   const [selectedPlace, setSelectedPlace] = useState(null);
 
   useEffect(() => {
+
+    const loadKakaoMapScript = () => {
+      if (!window.kakao) {
+        const script = document.createElement('script');
+        script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=a0b89900e54e7b70d0940e6d3f947b35&autoload=false`;
+        script.onload = () => {
+          window.kakao.maps.load(() => {
+            initializeMap();
+          });
+        };
+        document.head.appendChild(script);
+      } else {
+        window.kakao.maps.load(() => {
+          initializeMap();
+        });
+      }
+    };
+  
+    const initializeMap = () => {
+      const container = document.getElementById('map');
+      const options = {
+        center: new window.kakao.maps.LatLng(37.566826, 126.978656),
+        level: 3,
+        draggable: true,
+      };
+      const kakaoMap = new window.kakao.maps.Map(container, options);
+      setMap(kakaoMap);
+      
+      window.kakao.maps.event.addListener(kakaoMap, 'dragend', () => {
+        const latlng = kakaoMap.getCenter();
+        console.log('지도 중심 좌표:', latlng.getLat(), latlng.getLng());
+      });
+    };
+  
+    loadKakaoMapScript();
+    
     // 지도 초기화
     const container = document.getElementById('map');
     const options = {
