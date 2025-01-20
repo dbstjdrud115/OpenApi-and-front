@@ -97,9 +97,7 @@ const KakaoMap = () => {
         try {
         //현재는 프론트, 백 모두 로컬서버라 이리 설정되어있지만, 고정 ip 및 도메인이 정해지면 설정 변경 필요!
         //키워드 필수값으로 해야할듯.
-        /*
-          장소가 겹치는 경우엔 마커는 그대로 표시하돼, 결과 List에 각각뿌려주는쪽으로 방향을 잡아야할듯.
-        */
+        //장소가 겹치는 경우엔 마커는 그대로 표시하돼, 결과 List 컴포넌트에 각각뿌려주는쪽으로 방향을 잡아야할듯.
        
         const response = await fetch(`http://localhost:8050/kopis?keyword=${encodeURIComponent(searchKeyword)}`);
         const dbData = await response.json();
@@ -111,6 +109,12 @@ const KakaoMap = () => {
           // Kakao Maps API로 좌표 보완
           //place.festivalHallName = 공연장소
           //place.festivalArea     = 공연지역
+
+          /*
+            1. response.json인 dbData를 반복문을 돌려서 아래 작업을 실시한다. 
+            2. 반복대상 객체인 place에 대하여, 카카오 api를 호출하여, 
+                장소값을 키워드로 호출하여, 받아온 결과를 마커로 표시한다. 
+          */
           places.keywordSearch(place.festivalHallName, (kakaoData, status) => {
             if (status === window.kakao.maps.services.Status.OK) {
               // 첫 번째 검색 결과의 좌표 사용
