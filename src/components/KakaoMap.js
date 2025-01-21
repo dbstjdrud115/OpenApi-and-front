@@ -13,6 +13,7 @@ const KakaoMap = () => {
   const [selectedPlace, setSelectedPlace] = useState(null);
 
   // 카카오 맵 스크립트 로딩
+  /*
   useEffect(() => {
     const loadKakaoMapScript = () => {
       if (!window.kakao) {
@@ -35,6 +36,7 @@ const KakaoMap = () => {
     loadKakaoMapScript();
   }, []);
 
+  */
   // 지도 초기화
   useEffect(() => {
     if (map) {
